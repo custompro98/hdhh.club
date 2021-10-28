@@ -1,8 +1,8 @@
-import Head from "next/head";
-import Image from "next/image";
+import Head from "next/head"
+import Image from "next/image"
 
-import styles from "./layout.module.css";
-import utilStyles from "../styles/utils.module.css";
+import styles from "./layout.module.css"
+import utilStyles from "../styles/utils.module.css"
 
 export default function Layout({ children }) {
   return (
@@ -27,5 +27,5 @@ export default function Layout({ children }) {
       </header>
       <main>{children}</main>
     </div>
-  );
+  )
 }
