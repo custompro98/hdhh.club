@@ -24,7 +24,7 @@ export type AuthContext = {
   getFreshToken: Function
 }
 
-const authContext = createContext();
+const authContext = createContext({});
 
 export function AuthProvider({ children }) {
   const auth = useFirebaseAuth();
