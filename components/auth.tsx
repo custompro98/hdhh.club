@@ -19,7 +19,7 @@ export type AuthUser = {
 export type AuthContext = {
   user: AuthUser
   loading: boolean
-  signinWithGoogle: (_: string) => void
+  signinWithGoogle: () => void
   signout: () => void
   getFreshToken: () => Promise<string>
 }
