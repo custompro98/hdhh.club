@@ -2,7 +2,8 @@ import {
   getAuth,
   getRedirectResult,
   GoogleAuthProvider,
-  signInWithRedirect
+  signInWithRedirect,
+  User
 } from "firebase/auth";
 
 import firebase from "./client"
@@ -10,24 +11,19 @@ import firebase from "./client"
 const auth = getAuth(firebase)
 const provider = new GoogleAuthProvider()
 
-export default async (): Promise<string> => {
+export default async (): Promise<User> => {
   await signInWithRedirect(auth, provider)
 
   try {
-    const result = await getRedirectResult(auth)
-    const credential = GoogleAuthProvider.credentialFromResult(result)
+    const { user } = await getRedirectResult(auth)
 
-    const token = credential.accessToken
-
-    console.log(token)
-
-    return token
+    return user
   } catch (e) {
     const credential = GoogleAuthProvider.credentialFromError(e);
 
     console.log(JSON.stringify(e))
     console.log(JSON.stringify(credential))
 
-    return ""
+    Promise.reject(e)
   }
 }

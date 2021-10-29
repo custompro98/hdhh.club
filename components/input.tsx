@@ -1,5 +1,7 @@
 import { SyntheticEvent } from "react"
 
+import { submit } from "../lib/models/suggestion"
+
 import styles from "./input.module.css"
 import utilStyles from "../styles/utils.module.css"
 
@@ -11,26 +13,31 @@ export default function Input() {
       idea: { value: string }
     }
 
-    // alert(target.idea.value)
-    const res = await fetch(
-      '/api/submit-form',
-      {
-        body: JSON.stringify({
-          idea: target.idea.value
-        }),
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        method: 'POST'
-      }
-    )
-    const json = await res.json()
+    const result = await submit({
+      name: target.idea.value
+    })
 
-    if (json.error) {
-      alert(json.error)
-    } else {
-      alert(json.id)
-    }
+    console.log(result)
+
+    // const res = await fetch(
+    //   '/api/submit-form',
+    //   {
+    //     body: JSON.stringify({
+    //       idea: target.idea.value
+    //     }),
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     method: 'POST'
+    //   }
+    // )
+    // const json = await res.json()
+
+    // if (json.error) {
+    //   alert(json.error)
+    // } else {
+    //   alert(json.id)
+    // }
   }
 
   return (

@@ -1,11 +1,52 @@
 .container {
-  max-width: 36rem;
+  width: 100%;
   padding: 0 1rem;
-  margin: 3rem auto 3rem;
+  margin: 1rem auto 1rem;
 }
 
-.header {
+.headerContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-flow: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headerTxt {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-basis: 33%;
+}
+
+.headerImg {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-basis: 33%;
+}
+
+.headerAuth {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  flex-basis: 33%;
+}
+
+.headerUserDetails {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+
+  min-width: 12rem;
+}
+
+.headerAuthAction {
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
   align-items: center;
 }

@@ -1,8 +1,7 @@
 import {
   getDatabase,
   push,
-  ref,
-  ThenableReference
+  ref
 } from 'firebase/database'
 
 import firebase from './client'
