@@ -4,14 +4,29 @@ import styles from "./input.module.css"
 import utilStyles from "../styles/utils.module.css"
 
 export default function Input() {
-  const submitIdea = (event: SyntheticEvent) => {
+  const submitIdea = async (event: SyntheticEvent) => {
     event.preventDefault()
 
     const target = event.target as typeof event.target & {
       idea: { value: string }
     }
 
-    alert(target.idea.value)
+    // alert(target.idea.value)
+    const res = await fetch(
+      '/api/submit-form',
+      {
+        body: JSON.stringify({
+          idea: target.idea.value
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method: 'POST'
+      }
+    )
+    const json = await res.json()
+
+    alert(json.idea)
   }
 
   return (
