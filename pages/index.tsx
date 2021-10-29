@@ -20,7 +20,7 @@ export default function Home() {
   return (
     <Layout>
       {error ? (
-        <p>Unable to log in</p>
+        <p>Unable to log in: ${error}</p>
       ) : (
         <div className={styles.container}>
           {user ? (
