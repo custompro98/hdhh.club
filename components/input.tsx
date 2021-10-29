@@ -8,14 +8,14 @@ import styles from "./input.module.css"
 import utilStyles from "../styles/utils.module.css"
 
 export default function Input({ user }: { user: AuthUser }) {
-  const submitIdea = async (event: SyntheticEvent) => {
+  const suggest = async (event: SyntheticEvent) => {
     event.preventDefault()
 
     const target = event.target as typeof event.target & {
       idea: { value: string }
     }
 
-    await fetch(
+    const await fetch(
       '/api/submit-form',
       {
         body: JSON.stringify({
@@ -32,7 +32,7 @@ export default function Input({ user }: { user: AuthUser }) {
 
   return (
     <div className={styles.container}>
-      <form onSubmit={submitIdea}>
+      <form onSubmit={suggest}>
         <div className={styles.container}>
           <label htmlFor="idea" className={utilStyles.headingLg}>Idea</label>
         </div>
@@ -40,7 +40,7 @@ export default function Input({ user }: { user: AuthUser }) {
           <input id="idea" type="text" required className={styles.element} />
         </div>
         <div className={styles.container}>
-          <button type="submit">Submit</button>
+          <button type="submit">Suggest</button>
         </div>
       </form>
     </div>
