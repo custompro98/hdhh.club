@@ -1,14 +1,13 @@
 import { SyntheticEvent } from "react"
 
-import { AuthContext, useAuth } from "../components/auth"
+import { AuthUser } from "./auth"
+
 import { submit } from "../lib/models/suggestion"
 
 import styles from "./input.module.css"
 import utilStyles from "../styles/utils.module.css"
 
-export default function Input() {
-  const { user } = useAuth() as AuthContext;
-
+export default function Input({ user }: { user: AuthUser }) {
   const submitIdea = async (event: SyntheticEvent) => {
     event.preventDefault()
 

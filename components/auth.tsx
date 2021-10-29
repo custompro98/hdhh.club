@@ -19,9 +19,9 @@ export type AuthUser = {
 export type AuthContext = {
   user: AuthUser
   loading: boolean
-  signinWithGoogle: Function
-  signout: Function
-  getFreshToken: Function
+  signinWithGoogle: (_: string) => void
+  signout: () => void
+  getFreshToken: () => Promise<string>
 }
 
 const authContext = createContext({});
@@ -75,7 +75,7 @@ function useFirebaseAuth() {
     return () => unsubscribe();
   }, []);
 
-  const getFreshToken = async () => {
+  const getFreshToken = async (): Promise<string> => {
     console.log('getFreshToken called', new Date());
     const currentUser = getAuth(firebase).currentUser;
     if (currentUser) {

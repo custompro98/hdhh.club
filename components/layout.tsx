@@ -9,7 +9,7 @@ import utilStyles from "../styles/utils.module.css"
 export default function Layout({ children }: {
   children: React.ReactNode
 }) {
-  const { loading, signinWithGoogle, signout, user } = useAuth() as AuthContext;
+  const { signinWithGoogle, signout, user } = useAuth() as AuthContext;
 
   return (
     <>
@@ -49,13 +49,13 @@ export default function Layout({ children }: {
                 <div className={styles.headerAuthAction}>
                   <span className={utilStyles.lightText}>{user.name}</span>
                   <small>
-                    <a href="#" onClick={signout}>Sign Out</a>
+                    <a href="#" onClick={() => signout}>Sign Out</a>
                   </small>
                 </div>
               </div>
             ) : (
               <small>
-                <a href="#" onClick={signinWithGoogle}>Sign In</a>
+                <a href="#" onClick={() => signinWithGoogle}>Sign In</a>
               </small>
             )}
           </div>
