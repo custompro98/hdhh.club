@@ -1,3 +1,4 @@
+import Image from "next/image"
 import Link from "next/link"
 
 import Layout from "../components/layout"
@@ -23,7 +24,14 @@ export default function Home() {
       ) : (
         <div className={styles.container}>
           {user ? (
-            <p>{user.email}</p>
+            <>
+              <Image
+                src={user.photoURL}
+                height="108"
+                width="108"
+                className={utilStyles.borderCircle}
+              />
+            </>
           ) : (
             <a href="#" className={utilStyles.headingLg} onClick={authenticate}>Login</a>
           )}
