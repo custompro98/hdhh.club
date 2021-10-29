@@ -1,12 +1,12 @@
+import { Database } from 'firebase-admin/lib/database/database'
 import {
-  getDatabase,
   push,
   ref
 } from 'firebase/database'
 
-import firebase from './client'
+import admin from "./admin"
 
-const database = getDatabase(firebase)
+const database = admin.database() as Database
 
 const writer = (path: string) => async (value: unknown): Promise<string> => {
   const dbRef = await push(ref(database, path), value)

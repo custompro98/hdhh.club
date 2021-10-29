@@ -1,11 +1,14 @@
 import { SyntheticEvent } from "react"
 
+import { AuthContext, useAuth } from "../components/auth"
 import { submit } from "../lib/models/suggestion"
 
 import styles from "./input.module.css"
 import utilStyles from "../styles/utils.module.css"
 
 export default function Input() {
+  const { user } = useAuth() as AuthContext;
+
   const submitIdea = async (event: SyntheticEvent) => {
     event.preventDefault()
 
@@ -13,31 +16,19 @@ export default function Input() {
       idea: { value: string }
     }
 
-    const result = await submit({
-      name: target.idea.value
-    })
-
-    console.log(result)
-
-    // const res = await fetch(
-    //   '/api/submit-form',
-    //   {
-    //     body: JSON.stringify({
-    //       idea: target.idea.value
-    //     }),
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     method: 'POST'
-    //   }
-    // )
-    // const json = await res.json()
-
-    // if (json.error) {
-    //   alert(json.error)
-    // } else {
-    //   alert(json.id)
-    // }
+    await fetch(
+      '/api/submit-form',
+      {
+        body: JSON.stringify({
+          idea: target.idea.value
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.token}`
+        },
+        method: 'POST'
+      }
+    )
   }
 
   return (

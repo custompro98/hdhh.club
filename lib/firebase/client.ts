@@ -8,9 +8,11 @@ const config = {
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-const app = firebase.initializeApp(config);
+if (!firebase.getApps().length) {
+  firebase.initializeApp(config);
+}
 
-export default app as unknown as firebase.FirebaseApp
+export default firebase.getApp() as unknown as firebase.FirebaseApp
