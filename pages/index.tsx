@@ -6,6 +6,7 @@ import Layout from "../components/layout"
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getAuth } from "firebase/auth"
 
+// TODO: this exposes the API key in the browser 😠
 import authenticate from "../lib/firebase/auth"
 import firebase from "../lib/firebase/client";
 
