@@ -54,15 +54,11 @@ function useFirebaseAuth() {
     }
   };
 
-  const signinWithGoogle = async (redirect: string) => {
+  const signinWithGoogle = async () => {
     setLoading(true);
 
     const user = await authenticate()
     handleUser(user)
-
-    if (redirect) {
-      Router.push(redirect)
-    }
   };
 
   const signout = async () => {
