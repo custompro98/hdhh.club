@@ -26,7 +26,11 @@ export default function Input() {
     )
     const json = await res.json()
 
-    alert(json.idea)
+    if (json.error) {
+      alert(json.error)
+    } else {
+      alert(json.id)
+    }
   }
 
   return (
