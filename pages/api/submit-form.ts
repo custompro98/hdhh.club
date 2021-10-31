@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next"
 
 import { withAuth } from "../../lib/middleware/with-auth"
-import { submit } from "../../lib/models/suggestion"
+import { ALREADY_EXISTS, submit } from "../../lib/models/suggestion"
 import {
   CREATED,
   DUPLICATE,
@@ -16,7 +16,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     res.status(CREATED).json({ id: result })
   } catch (e) {
-    res.status(INTERNAL_SERVER_ERROR).json({ error: "An internal server error occurred" })
+    if (e === ALREADY_EXISTS) {
+      res.status(DUPLICATE).json({ error: "The idea already exists" })
+    } else {
+      res.status(INTERNAL_SERVER_ERROR).json({ error: "An internal server error occurred" })
+    }
   }
 }
 
