@@ -1,7 +1,12 @@
 import { NextApiRequest, NextApiResponse } from "next"
-import { withAuth } from "../../lib/middleware/with-auth"
 
+import { withAuth } from "../../lib/middleware/with-auth"
 import { submit } from "../../lib/models/suggestion"
+import {
+  CREATED,
+  DUPLICATE,
+  INTERNAL_SERVER_ERROR
+} from "../../lib/http"
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -9,9 +14,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       name: req.body.idea,
     })
 
-    res.status(200).json({ id: result })
+    res.status(CREATED).json({ id: result })
   } catch (e) {
-    res.status(500).json({ error: "An internal server error occurred" })
+    res.status(INTERNAL_SERVER_ERROR).json({ error: "An internal server error occurred" })
   }
 }
 
