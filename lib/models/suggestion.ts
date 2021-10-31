@@ -8,13 +8,19 @@ export type Suggestion = {
 }
 
 const submit = async (suggestion: Suggestion): Promise<string> => {
+  const normalizedSuggestion = normalize(suggestion)
+
   try {
-    const result = await write(suggestion)
+    const result = await write(normalizedSuggestion)
     return result
   } catch (e) {
     console.log(JSON.stringify(e))
     return Promise.reject(e)
   }
+}
+
+const normalize = (suggestion: Suggestion) => {
+  return { ...suggestion, name: suggestion.name.toLowerCase() }
 }
 
 export { submit }
