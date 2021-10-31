@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useContext, createContext } from 'react';
-import Router from 'next/router';
+import React, { useState, useEffect, useContext, createContext } from "react"
+import Router from "next/router"
 
 import { getAuth, User } from "firebase/auth"
 
-import authenticate from '../lib/firebase/auth'
-import firebase from '../lib/firebase/client';
+import authenticate from "../lib/firebase/auth"
+import firebase from "../lib/firebase/client"
 
 export type AuthUser = {
   uid: string
@@ -24,63 +24,63 @@ export type AuthContext = {
   getFreshToken: () => Promise<string>
 }
 
-const authContext = createContext({});
+const authContext = createContext({})
 
 export function AuthProvider({ children }) {
-  const auth = useFirebaseAuth();
-  return <authContext.Provider value={auth}>{children}</authContext.Provider>;
+  const auth = useFirebaseAuth()
+  return <authContext.Provider value={auth}>{children}</authContext.Provider>
 }
 
 export const useAuth = () => {
-  return useContext(authContext);
-};
+  return useContext(authContext)
+}
 
 function useFirebaseAuth() {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
 
-  const handleUser = async (rawUser: (User | false)) => {
+  const handleUser = async (rawUser: User | false) => {
     if (rawUser) {
-      const user = await formatUser(rawUser);
+      const user = await formatUser(rawUser)
 
-      setUser(user);
+      setUser(user)
 
-      setLoading(false);
-      return user;
+      setLoading(false)
+      return user
     } else {
-      setUser(false);
-      setLoading(false);
-      return false;
+      setUser(false)
+      setLoading(false)
+      return false
     }
-  };
+  }
 
   const signinWithGoogle = async () => {
-    setLoading(true);
+    setLoading(true)
 
     const user = await authenticate()
     handleUser(user)
-  };
+  }
 
   const signout = async () => {
     await getAuth(firebase).signOut()
     handleUser(false)
-  };
+  }
 
   useEffect(() => {
-    const unsubscribe = getAuth(firebase).onIdTokenChanged(handleUser);
-    return () => unsubscribe();
-  }, []);
+    const unsubscribe = getAuth(firebase).onIdTokenChanged(handleUser)
+    return () => unsubscribe()
+  }, [])
 
   const getFreshToken = async (): Promise<string> => {
-    console.log('getFreshToken called', new Date());
-    const currentUser = getAuth(firebase).currentUser;
+    console.log("getFreshToken called", new Date())
+    const currentUser = getAuth(firebase).currentUser
     if (currentUser) {
-      const token = await currentUser.getIdToken(false);
-      return `${token}`;
+      const token = await currentUser.getIdToken(false)
+      return `${token}`
     } else {
-      return '';
+      return ""
     }
-  };
+  }
 
   return {
     user,
@@ -88,12 +88,12 @@ function useFirebaseAuth() {
     signinWithGoogle,
     signout,
     getFreshToken,
-  };
+  }
 }
 
 const formatUser = async (user: User) => {
-  const decodedToken = await user.getIdTokenResult(/*forceRefresh*/ true);
-  const { token, expirationTime } = decodedToken;
+  const decodedToken = await user.getIdTokenResult(/*forceRefresh*/ true)
+  const { token, expirationTime } = decodedToken
 
   return {
     uid: user.uid,
@@ -103,5 +103,5 @@ const formatUser = async (user: User) => {
     photoUrl: user.photoURL,
     token,
     expirationTime,
-  };
-};
+  }
+}

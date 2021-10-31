@@ -1,4 +1,4 @@
-import { writer } from '../firebase/database'
+import { writer } from "../firebase/database"
 
 const path = "suggestions"
 const write = writer(path)
@@ -12,7 +12,7 @@ const submit = async (suggestion: Suggestion): Promise<string> => {
     const result = await write(suggestion)
     return result
   } catch (e) {
-    console.log((JSON.stringify(e)))
+    console.log(JSON.stringify(e))
     return Promise.reject(e)
   }
 }

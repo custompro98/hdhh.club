@@ -1,6 +1,6 @@
-import * as firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
+import * as firebase from "firebase/app"
+import "firebase/auth"
+import "firebase/firestore"
 
 const config = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -9,10 +9,10 @@ const config = {
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-};
+}
 
 if (!firebase.getApps().length) {
-  firebase.initializeApp(config);
+  firebase.initializeApp(config)
 }
 
 export default firebase.getApp() as unknown as firebase.FirebaseApp

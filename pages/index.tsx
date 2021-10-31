@@ -7,7 +7,7 @@ import styles from "../styles/Home.module.css"
 import utilStyles from "../styles/utils.module.css"
 
 export default function Home() {
-  const { user } = useAuth() as AuthContext;
+  const { user } = useAuth() as AuthContext
 
   return (
     <Layout>

@@ -13,26 +13,25 @@ export default function Input({ user }: { user: AuthUser }) {
       idea: { value: string }
     }
 
-    const await fetch(
-      '/api/submit-form',
-      {
-        body: JSON.stringify({
-          idea: target.idea.value
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.token}`
-        },
-        method: 'POST'
-      }
-    )
+    await fetch("/api/submit-form", {
+      body: JSON.stringify({
+        idea: target.idea.value,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+      method: "POST",
+    })
   }
 
   return (
     <div className={styles.container}>
       <form onSubmit={suggest}>
         <div className={styles.container}>
-          <label htmlFor="idea" className={utilStyles.headingLg}>Idea</label>
+          <label htmlFor="idea" className={utilStyles.headingLg}>
+            Idea
+          </label>
         </div>
         <div className={styles.container}>
           <input id="idea" type="text" required className={styles.element} />

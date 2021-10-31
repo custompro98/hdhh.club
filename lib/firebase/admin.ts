@@ -1,16 +1,16 @@
-import * as admin from "firebase-admin";
+import * as admin from "firebase-admin"
 
 const config = {
   credential: admin.credential.cert({
     projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
     clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
   }),
-  databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL
+  databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
 }
 
 if (!admin.apps.length) {
-  admin.initializeApp(config);
+  admin.initializeApp(config)
 }
 
 export default admin.app() as admin.app.App
