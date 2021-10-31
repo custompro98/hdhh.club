@@ -27,8 +27,7 @@ const submit = async (suggestion: Suggestion): Promise<Suggestion> => {
   const normalizedSuggestion = normalize(suggestion)
 
   try {
-    const exists = await alreadyExists(normalizedSuggestion)
-    if (exists) {
+    if (await alreadyExists(normalizedSuggestion)) {
       return Promise.reject(ALREADY_EXISTS)
     }
 
