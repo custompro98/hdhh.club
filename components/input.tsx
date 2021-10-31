@@ -1,4 +1,6 @@
 import { SyntheticEvent } from "react"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { AuthUser } from "./auth"
 
@@ -6,6 +8,12 @@ import styles from "./input.module.css"
 import utilStyles from "../styles/utils.module.css"
 
 export default function Input({ user }: { user: AuthUser }) {
+  let form: HTMLFormElement
+
+  const setForm = (el: HTMLFormElement) => {
+    form = el
+  }
+
   const suggest = async (event: SyntheticEvent) => {
     event.preventDefault()
 
@@ -13,21 +21,31 @@ export default function Input({ user }: { user: AuthUser }) {
       idea: { value: string }
     }
 
-    await fetch("/api/submit-form", {
-      body: JSON.stringify({
-        idea: target.idea.value,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${user.token}`,
-      },
-      method: "POST",
-    })
+    const idea = target.idea.value
+
+    try {
+      await fetch("/api/submit-form", {
+        body: JSON.stringify({
+          idea,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        method: "POST",
+      })
+
+      toast.success(`Thanks for suggesting ${idea}`)
+    } catch (e) {
+      toast.error("It's already on the list, thanks!")
+    } finally {
+      form.reset()
+    }
   }
 
   return (
     <div className={styles.container}>
-      <form onSubmit={suggest}>
+      <form onSubmit={suggest} ref={setForm}>
         <div className={styles.container}>
           <label htmlFor="idea" className={utilStyles.headingLg}>
             Idea
@@ -40,6 +58,10 @@ export default function Input({ user }: { user: AuthUser }) {
           <button type="submit">Suggest</button>
         </div>
       </form>
+      <ToastContainer
+        position="bottom-center"
+        closeOnClick
+      />
     </div>
   )
 }
