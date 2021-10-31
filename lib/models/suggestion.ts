@@ -23,7 +23,7 @@ const alreadyExists = async (entry: Suggestion): Promise<boolean> => {
   return false
 }
 
-const submit = async (suggestion: Suggestion): Promise<string> => {
+const submit = async (suggestion: Suggestion): Promise<Suggestion> => {
   const normalizedSuggestion = normalize(suggestion)
 
   try {
@@ -32,9 +32,9 @@ const submit = async (suggestion: Suggestion): Promise<string> => {
       return Promise.reject(ALREADY_EXISTS)
     }
 
-    // TODO: return the suggestion with a key in place
-    const result = await write(normalizedSuggestion)
-    return result
+    const key = await write(normalizedSuggestion)
+
+    return { key, ...suggestion }
   } catch (e) {
     return Promise.reject(e)
   }
