@@ -2,8 +2,6 @@ import { SyntheticEvent } from "react"
 
 import { AuthUser } from "./auth"
 
-import { submit } from "../lib/models/suggestion"
-
 import styles from "./input.module.css"
 import utilStyles from "../styles/utils.module.css"
 
