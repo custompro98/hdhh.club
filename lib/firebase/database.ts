@@ -6,22 +6,20 @@ type FirebaseEntries = {
 
 const database = admin.database()
 
-const reader =
-  (path: string) =>
-    async (): Promise<unknown> => {
-      const entries = await database.ref(path).get()
-      const result = normalize(entries.val() as FirebaseEntries)
+const reader = (path: string) => async (): Promise<unknown> => {
+  const entries = await database.ref(path).get()
+  const result = normalize(entries.val() as FirebaseEntries)
 
-      return result
-    }
+  return result
+}
 
 const writer =
   (path: string) =>
-    async (value: unknown): Promise<string> => {
-      const result = await database.ref(path).push(value)
+  async (value: unknown): Promise<string> => {
+    const result = await database.ref(path).push(value)
 
-      return result.key
-    }
+    return result.key
+  }
 
 const normalize = (entries: FirebaseEntries): Object[] => {
   const result = []

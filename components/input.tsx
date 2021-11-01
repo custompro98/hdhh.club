@@ -1,13 +1,9 @@
 import { SyntheticEvent } from "react"
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 import { AuthUser } from "./auth"
-
-import {
-  CREATED,
-  DUPLICATE
-} from "../lib/http"
+import { CREATED, DUPLICATE } from "../lib/http"
 
 import styles from "./input.module.css"
 import utilStyles from "../styles/utils.module.css"
@@ -65,10 +61,7 @@ export default function Input({ user }: { user: AuthUser }) {
           <button type="submit">Suggest</button>
         </div>
       </form>
-      <ToastContainer
-        position="bottom-center"
-        closeOnClick
-      />
+      <ToastContainer position="bottom-center" closeOnClick />
     </div>
   )
 }

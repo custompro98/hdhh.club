@@ -14,7 +14,10 @@ export default function Home() {
       {user ? (
         <div className={styles.container}>
           <Link href="/submit">
-            <a className={utilStyles.headingLg}>Submit an idea</a>
+            <a className={utilStyles.headingLg}>Suggest</a>
+          </Link>
+          <Link href="/random">
+            <a className={utilStyles.headingLg}>Choose</a>
           </Link>
         </div>
       ) : null}

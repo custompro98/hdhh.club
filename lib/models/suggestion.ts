@@ -11,16 +11,15 @@ export type Suggestion = {
 
 const ALREADY_EXISTS = "already exists"
 
-const alreadyExists = async (entry: Suggestion): Promise<boolean> => {
-  const allSuggestions = await read()
+const randomize = async (): Promise<Suggestion> => {
+  try {
+    const allSuggestions = (await read()) as Suggestion[]
+    const numSuggestions = allSuggestions.length
 
-  for (let suggestion of allSuggestions as Suggestion[]) {
-    if (suggestion.name === entry.name) {
-      return true
-    }
+    return allSuggestions[randomNumber(numSuggestions)]
+  } catch (e) {
+    return Promise.reject(e)
   }
-
-  return false
 }
 
 const submit = async (suggestion: Suggestion): Promise<Suggestion> => {
@@ -39,8 +38,24 @@ const submit = async (suggestion: Suggestion): Promise<Suggestion> => {
   }
 }
 
+const alreadyExists = async (entry: Suggestion): Promise<boolean> => {
+  const allSuggestions = await read()
+
+  for (let suggestion of allSuggestions as Suggestion[]) {
+    if (suggestion.name === entry.name) {
+      return true
+    }
+  }
+
+  return false
+}
+
 const normalize = (suggestion: Suggestion) => {
   return { ...suggestion, name: suggestion.name.toLowerCase() }
 }
 
-export { ALREADY_EXISTS, submit }
+const randomNumber = (max: number): number => {
+  return Math.floor(Math.random() * max)
+}
+
+export { ALREADY_EXISTS, randomize, submit }
