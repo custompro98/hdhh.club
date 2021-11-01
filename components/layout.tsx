@@ -63,6 +63,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </header>
         <main>{children}</main>
+        <footer className={styles.footer}>
+          <span className={utilStyles.lightText}>
+            Loading animation provided by <a href="loading.io">loading.io</a>
+          </span>
+        </footer>
       </div>
     </>
   )

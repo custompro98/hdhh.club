@@ -2,6 +2,10 @@
   width: 100%;
   padding: 0 1rem;
   margin: 1rem auto 1rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .headerContainer {
@@ -49,4 +53,18 @@
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  position: fixed;
+  height: 50px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  margin-bottom: 0px;
 }
