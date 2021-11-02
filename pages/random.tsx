@@ -47,7 +47,7 @@ export default function Random() {
               alt="loading"
             />
           ) : (
-            <span className={utilStyles.headingMd}>{choice.name}</span>
+            <span className={styles.choice}>{choice.name}</span>
           )}
           <form onSubmit={choose}>
             <div className={styles.container}>
