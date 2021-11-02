@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css"
 
 import Layout from "../components/layout"
 import { AuthContext, useAuth } from "../components/auth"
+import { NOT_FOUND } from "../lib/http"
 
 import { Suggestion } from "../lib/models/suggestion"
 
@@ -15,6 +16,7 @@ export default function Random() {
   const { user } = useAuth() as AuthContext
   const [choice, setChoice] = useState({} as Suggestion)
   const [loading, setLoading] = useState(false)
+  const [noneFound, setNoneFound] = useState(false)
 
   const randomize = async (event: SyntheticEvent) => {
     event.preventDefault()
@@ -31,7 +33,12 @@ export default function Random() {
     const result = (await response.json()) as Suggestion
 
     setTimeout(() => {
-      setChoice(result)
+      if (response.status !== NOT_FOUND) {
+        setChoice(result)
+      } else {
+        setNoneFound(true)
+      }
+
       setLoading(false)
     }, 750)
   }
@@ -61,6 +68,9 @@ export default function Random() {
     <Layout>
       {user ? (
         <div className={styles.container}>
+          {noneFound ? (
+            <span className={styles.choice}>☹️ No suggestions found</span>
+          ) : null}
           {loading ? (
             <Image
               priority

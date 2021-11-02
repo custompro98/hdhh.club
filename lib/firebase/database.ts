@@ -6,6 +6,15 @@ type FirebaseEntries = {
 
 const database = admin.database()
 
+const exister = (path: string) => async (): Promise<boolean> => {
+  let result: boolean
+  database.ref(path).once("value", res => {
+    result = res.val() !== null
+  })
+
+  return result
+}
+
 const reader = (path: string) => async (): Promise<unknown> => {
   const entries = await database.ref(path).get()
   const result = normalize(entries.val() as FirebaseEntries)
@@ -41,4 +50,4 @@ const normalize = (entries: FirebaseEntries): Object[] => {
   return result
 }
 
-export { remover, reader, writer }
+export { exister, remover, reader, writer }

@@ -1,10 +1,13 @@
 import {
+  exister,
   reader,
   remover,
   writer
 } from "../firebase/database"
 
 const path = "suggestions"
+
+const exists = exister(path)
 const read = reader(path)
 const remove = remover(path)
 const write = writer(path)
@@ -15,9 +18,14 @@ export type Suggestion = {
 }
 
 const ALREADY_EXISTS = "already exists"
+const NONE_FOUND = "none found"
 
 const del = async (key: string): Promise<boolean> => {
   try {
+    if (!await exists()) {
+      return false
+    }
+
     await remove(key)
 
     return true
@@ -28,6 +36,10 @@ const del = async (key: string): Promise<boolean> => {
 
 const randomize = async (): Promise<Suggestion> => {
   try {
+    if (!await exists()) {
+      throw NONE_FOUND
+    }
+
     const allSuggestions = (await read()) as Suggestion[]
     const numSuggestions = allSuggestions.length
 
@@ -54,6 +66,10 @@ const submit = async (suggestion: Suggestion): Promise<Suggestion> => {
 }
 
 const alreadyExists = async (entry: Suggestion): Promise<boolean> => {
+  if (!await exists()) {
+    return false
+  }
+
   const allSuggestions = await read()
 
   for (let suggestion of allSuggestions as Suggestion[]) {
@@ -73,4 +89,4 @@ const randomNumber = (max: number): number => {
   return Math.floor(Math.random() * max)
 }
 
-export { ALREADY_EXISTS, del, randomize, submit }
+export { ALREADY_EXISTS, NONE_FOUND, del, randomize, submit }
