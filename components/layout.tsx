@@ -1,5 +1,7 @@
 import Head from "next/head"
 import Image from "next/image"
+import Link from "next/link"
+import cn from "classnames"
 
 import { AuthContext, useAuth } from "../components/auth"
 
@@ -22,7 +24,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div className={styles.container}>
         <header className={styles.headerContainer}>
           <div className={styles.headerTxt}>
-            <h1 className={utilStyles.headingLg}>Hump Day Happy Hour</h1>
+            <Link href="/">
+              <h1 className={cn(utilStyles.headingLg, styles.pointer)}>Hump Day Happy Hour</h1>
+            </Link>
           </div>
           <div className={styles.headerImg}>
             <Image
@@ -31,6 +35,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               height={144}
               width={144}
               alt="camel"
+              className={styles.pointer}
             />
           </div>
           <div className={styles.headerAuth}>
