@@ -19,14 +19,14 @@ export default function Input({ user }: { user: AuthUser }) {
     event.preventDefault()
 
     const target = event.target as typeof event.target & {
-      idea: { value: string }
+      suggestion: { value: string }
     }
 
-    const idea = target.idea.value
+    const suggestion = target.suggestion.value
 
     const result = await fetch("/api/submit-form", {
       body: JSON.stringify({
-        idea,
+        suggestion,
       }),
       headers: {
         "Content-Type": "application/json",
@@ -36,9 +36,9 @@ export default function Input({ user }: { user: AuthUser }) {
     })
 
     if (result.status === CREATED) {
-      toast.success(`Thanks for suggesting ${idea}!`)
+      toast.success(`Thanks for suggesting ${suggestion}!`)
     } else if (result.status === DUPLICATE) {
-      toast.warn(`${idea} is already on the list, thanks!`)
+      toast.warn(`${suggestion} is already on the list, thanks!`)
     } else {
       toast.error(`Something's broken, try again later.`)
     }
@@ -50,12 +50,12 @@ export default function Input({ user }: { user: AuthUser }) {
     <div className={styles.container}>
       <form onSubmit={suggest} ref={setForm}>
         <div className={styles.container}>
-          <label htmlFor="idea" className={utilStyles.headingLg}>
-            Idea
+          <label htmlFor="suggestion" className={utilStyles.headingLg}>
+            Suggestion
           </label>
         </div>
         <div className={styles.container}>
-          <input id="idea" type="text" required className={styles.element} />
+          <input id="suggestion" type="text" required className={styles.element} />
         </div>
         <div className={styles.container}>
           <button type="submit">Suggest</button>

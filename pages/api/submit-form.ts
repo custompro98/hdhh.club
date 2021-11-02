@@ -7,13 +7,13 @@ import { CREATED, DUPLICATE, INTERNAL_SERVER_ERROR } from "../../lib/http"
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const result = await submit({
-      name: req.body.idea,
+      name: req.body.suggestion,
     })
 
     res.status(CREATED).json({ id: result })
   } catch (e) {
     if (e === ALREADY_EXISTS) {
-      res.status(DUPLICATE).json({ error: "The idea already exists" })
+      res.status(DUPLICATE).json({ error: "The suggestion already exists" })
     } else {
       res
         .status(INTERNAL_SERVER_ERROR)
