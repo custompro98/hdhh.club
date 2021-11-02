@@ -1,9 +1,20 @@
 import { Suggestion, del } from "./suggestion"
-import { setter } from "../firebase/database"
+import { getter, setter } from "../firebase/database"
 
 const path = `upNext`
 
+const get = getter(path)
 const set = setter(path)
+
+const find = async (): Promise<Suggestion> => {
+  try {
+    const result = await get() as Suggestion
+
+    return result
+  } catch (e) {
+    return Promise.reject(e)
+  }
+}
 
 const schedule = async (suggestion: Suggestion): Promise<boolean> => {
   try {
@@ -17,4 +28,4 @@ const schedule = async (suggestion: Suggestion): Promise<boolean> => {
 }
 
 
-export { schedule }
+export { find, schedule }

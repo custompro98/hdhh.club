@@ -15,7 +15,20 @@ const exister = (path: string) => async (): Promise<boolean> => {
   return result
 }
 
-const reader = (path: string) => async (): Promise<unknown> => {
+const getter = (path: string) => async (key?: string): Promise<unknown> => {
+  let ref = database.ref(path)
+
+  if (key) {
+    ref = ref.child(key)
+  }
+
+  const result = ref.get()
+  console.log(result)
+
+  return result
+}
+
+const reader = (path: string) => async (): Promise<unknown[]> => {
   const entries = await database.ref(path).get()
   const result = normalize(entries.val() as FirebaseEntries)
 
@@ -52,4 +65,4 @@ const normalize = (entries: FirebaseEntries): Object[] => {
   return result
 }
 
-export { exister, remover, reader, setter, writer }
+export { exister, getter, remover, reader, setter, writer }
