@@ -24,7 +24,7 @@ export default function Input({ user }: { user: AuthUser }) {
 
     const suggestion = target.suggestion.value
 
-    const result = await fetch("/api/submit-form", {
+    const result = await fetch("/api/create-suggestion", {
       body: JSON.stringify({
         suggestion,
       }),

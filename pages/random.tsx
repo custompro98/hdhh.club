@@ -22,7 +22,7 @@ export default function Random() {
     event.preventDefault()
     setLoading(true)
 
-    const response = await fetch("/api/random-suggestion", {
+    const response = await fetch("/api/get-suggestion", {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${user.token}`,
