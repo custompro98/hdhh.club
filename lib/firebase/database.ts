@@ -30,13 +30,15 @@ const remover = (path: string) => async (key: string): Promise<void> => {
   }
 }
 
-const writer =
-  (path: string) =>
-    async (value: unknown): Promise<string> => {
-      const result = await database.ref(path).push(value)
+const setter = (path: string) => async (value: unknown): Promise<void> => {
+  await database.ref(path).set(value)
+}
 
-      return result.key
-    }
+const writer = (path: string) => async (value: unknown): Promise<string> => {
+  const result = await database.ref(path).push(value)
+
+  return result.key
+}
 
 const normalize = (entries: FirebaseEntries): Object[] => {
   const result = []
@@ -50,4 +52,4 @@ const normalize = (entries: FirebaseEntries): Object[] => {
   return result
 }
 
-export { exister, remover, reader, writer }
+export { exister, remover, reader, setter, writer }

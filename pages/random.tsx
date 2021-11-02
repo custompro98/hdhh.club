@@ -49,7 +49,7 @@ export default function Random() {
     event.preventDefault()
 
     try {
-      await fetch("/api/remove-suggestion", {
+      await fetch("/api/schedule-suggestion", {
         body: JSON.stringify({
           suggestion: choice
         }),
@@ -57,12 +57,12 @@ export default function Random() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${user.token}`,
         },
-        method: "DELETE",
+        method: "POST",
       })
 
       toast.success(`Enjoy eating at ${choice.name}`)
     } catch (e) {
-      toast.error("Something wnet wrong, enjoy anyway!")
+      toast.error("Something went wrong, enjoy anyway!")
     }
   }
 
