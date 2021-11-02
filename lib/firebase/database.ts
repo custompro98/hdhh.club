@@ -13,13 +13,21 @@ const reader = (path: string) => async (): Promise<unknown> => {
   return result
 }
 
+const remover = (path: string) => async (key: string): Promise<void> => {
+  try {
+    await database.ref(path).child(key).remove()
+  } catch (e) {
+    Promise.reject(e)
+  }
+}
+
 const writer =
   (path: string) =>
-  async (value: unknown): Promise<string> => {
-    const result = await database.ref(path).push(value)
+    async (value: unknown): Promise<string> => {
+      const result = await database.ref(path).push(value)
 
-    return result.key
-  }
+      return result.key
+    }
 
 const normalize = (entries: FirebaseEntries): Object[] => {
   const result = []
@@ -33,4 +41,4 @@ const normalize = (entries: FirebaseEntries): Object[] => {
   return result
 }
 
-export { reader, writer }
+export { remover, reader, writer }

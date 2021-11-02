@@ -1,7 +1,12 @@
-import { reader, writer } from "../firebase/database"
+import {
+  reader,
+  remover,
+  writer
+} from "../firebase/database"
 
 const path = "suggestions"
 const read = reader(path)
+const remove = remover(path)
 const write = writer(path)
 
 export type Suggestion = {
@@ -10,6 +15,16 @@ export type Suggestion = {
 }
 
 const ALREADY_EXISTS = "already exists"
+
+const del = async (key: string): Promise<boolean> => {
+  try {
+    await remove(key)
+
+    return true
+  } catch (e) {
+    return Promise.reject(e)
+  }
+}
 
 const randomize = async (): Promise<Suggestion> => {
   try {
@@ -58,4 +73,4 @@ const randomNumber = (max: number): number => {
   return Math.floor(Math.random() * max)
 }
 
-export { ALREADY_EXISTS, randomize, submit }
+export { ALREADY_EXISTS, del, randomize, submit }

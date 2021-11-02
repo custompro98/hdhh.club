@@ -1,5 +1,7 @@
 import { SyntheticEvent, useState } from "react"
 import Image from "next/image"
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 import Layout from "../components/layout"
 import { AuthContext, useAuth } from "../components/auth"
@@ -14,7 +16,7 @@ export default function Random() {
   const [choice, setChoice] = useState({} as Suggestion)
   const [loading, setLoading] = useState(false)
 
-  const choose = async (event: SyntheticEvent) => {
+  const randomize = async (event: SyntheticEvent) => {
     event.preventDefault()
     setLoading(true)
 
@@ -34,6 +36,27 @@ export default function Random() {
     }, 750)
   }
 
+  const select = async (event: SyntheticEvent) => {
+    event.preventDefault()
+
+    try {
+      await fetch("/api/remove-suggestion", {
+        body: JSON.stringify({
+          suggestion: choice
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        method: "DELETE",
+      })
+
+      toast.success(`Enjoy eating at ${choice.name}`)
+    } catch (e) {
+      toast.error("Something wnet wrong, enjoy anyway!")
+    }
+  }
+
   return (
     <Layout>
       {user ? (
@@ -49,13 +72,29 @@ export default function Random() {
           ) : (
             <span className={styles.choice}>{choice.name}</span>
           )}
-          <form onSubmit={choose}>
-            <div className={styles.container}>
-              <button type="submit" disabled={loading}>
-                {choice.key ? "Choose again" : "Choose"}
-              </button>
-            </div>
-          </form>
+          {choice.key ? (
+            <>
+              <form onSubmit={randomize}>
+                <div className={styles.container}>
+                  <button type="submit" disabled={loading}>👎</button>
+                </div>
+              </form>
+              <form onSubmit={select}>
+                <div className={styles.container}>
+                  <button type="submit" disabled={loading}>👍</button>
+                </div>
+              </form>
+            </>
+          ) : (
+            <form onSubmit={randomize}>
+              <div className={styles.container}>
+                <button type="submit" disabled={loading}>
+                  {choice.key ? "Choose again" : "Choose"}
+                </button>
+              </div>
+            </form>
+          )}
+          <ToastContainer position="bottom-center" closeOnClick />
         </div>
       ) : null}
     </Layout>
