@@ -34,9 +34,11 @@ export default function Random() {
 
     setTimeout(() => {
       if (response.status !== NOT_FOUND) {
+        setNoneFound(false)
         setChoice(result)
       } else {
         setNoneFound(true)
+        setChoice({} as Suggestion)
       }
 
       setLoading(false)
@@ -68,7 +70,7 @@ export default function Random() {
     <Layout>
       {user ? (
         <div className={styles.container}>
-          {noneFound ? (
+          {noneFound && !loading ? (
             <span className={styles.choice}>☹️ No suggestions found</span>
           ) : null}
           {loading ? (

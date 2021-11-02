@@ -8,7 +8,7 @@ const database = admin.database()
 
 const exister = (path: string) => async (): Promise<boolean> => {
   let result: boolean
-  database.ref(path).once("value", res => {
+  await database.ref(path).once("value", res => {
     result = res.val() !== null
   })
 
