@@ -1,5 +1,6 @@
 import { SyntheticEvent, useState } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { GetServerSideProps } from "next"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
@@ -72,7 +73,12 @@ export default function Random({ suggestion, anyFound }: { suggestion: Suggestio
       {user ? (
         <div className={styles.container}>
           {noneFound && !loading ? (
-            <span className={styles.choice}>☹️ No suggestions found</span>
+            <>
+              <span className={styles.choice}>☹️ No suggestions found</span>
+              <Link href="/submit">
+                <a>Suggest</a>
+              </Link>
+            </>
           ) : null}
           {loading ? (
             <Image
@@ -87,30 +93,17 @@ export default function Random({ suggestion, anyFound }: { suggestion: Suggestio
           )}
           {choice.key ? (
             <>
-              <form onSubmit={randomize}>
-                <div className={styles.container}>
-                  <button type="submit" disabled={loading}>👎</button>
-                </div>
-              </form>
-              <form onSubmit={select}>
-                <div className={styles.container}>
-                  <button type="submit" disabled={loading}>👍</button>
-                </div>
-              </form>
-            </>
-          ) : (
-            <form onSubmit={randomize}>
-              <div className={styles.container}>
-                <button type="submit" disabled={loading}>
-                  {choice.key ? "Choose again" : "Choose"}
-                </button>
+              <div className={styles.buttonContainer}>
+                <span className={styles.button} onClick={randomize}>👎</span>
+                <span className={styles.button} onClick={select}>👍</span>
               </div>
-            </form>
-          )}
+            </>
+          ) : null}
           <ToastContainer position="bottom-center" closeOnClick />
         </div>
-      ) : null}
-    </Layout>
+      ) : null
+      }
+    </Layout >
   )
 }
 
