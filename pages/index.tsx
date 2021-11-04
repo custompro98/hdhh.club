@@ -39,7 +39,7 @@ export default function Home() {
     <Layout>
       {user ? (
         <div className={styles.container}>
-          {upNext.name ? (
+          {upNext && upNext.name ? (
             <span className={cn(utilStyles.headingXl, styles.upNext)}>{upNext.name}</span>
           ) : null}
           <Link href="/submit">
