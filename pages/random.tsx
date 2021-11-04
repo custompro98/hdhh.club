@@ -124,7 +124,7 @@ export default function Random() {
               </div>
             </>
           ) : null}
-          <ToastContainer position="bottom-center" closeOnClick />
+          <ToastContainer position="top-right" closeOnClick />
         </div>
       ) : null
       }

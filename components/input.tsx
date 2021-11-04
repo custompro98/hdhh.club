@@ -61,7 +61,7 @@ export default function Input({ user }: { user: AuthUser }) {
           <button type="submit">Suggest</button>
         </div>
       </form>
-      <ToastContainer position="bottom-center" closeOnClick />
+      <ToastContainer position="top-right" closeOnClick />
     </div>
   )
 }
