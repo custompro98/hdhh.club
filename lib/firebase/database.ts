@@ -22,8 +22,7 @@ const getter = (path: string) => async (key?: string): Promise<unknown> => {
     ref = ref.child(key)
   }
 
-  const result = ref.get()
-  console.log(result)
+  const result = await ref.get()
 
   return result
 }
