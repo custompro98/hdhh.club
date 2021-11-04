@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { GetServerSideProps } from "next"
 import cn from "classnames"
@@ -6,13 +7,33 @@ import Layout from "../components/layout"
 import { AuthContext, useAuth } from "../components/auth"
 
 import { Suggestion } from "../lib/models/suggestion"
-import { find } from "../lib/models/up-next"
 
 import styles from "../styles/Home.module.css"
 import utilStyles from "../styles/utils.module.css"
 
-export default function Home({ upNext }: { upNext: Suggestion }) {
+export default function Home() {
   const { user } = useAuth() as AuthContext
+  const [upNext, setUpNext] = useState({} as Suggestion)
+
+  useEffect(() => {
+    if (!user) { return }
+
+    async function doRequest() {
+      const response = await fetch("/api/get-scheduled", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        method: "GET",
+      })
+
+      const result = (await response.json()).suggestion as Suggestion
+
+      setUpNext(result)
+    }
+
+    doRequest()
+  }, [user])
 
   return (
     <Layout>
@@ -31,14 +52,4 @@ export default function Home({ upNext }: { upNext: Suggestion }) {
       ) : null}
     </Layout>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  const result = await find()
-
-  return {
-    props: {
-      upNext: JSON.parse(JSON.stringify(result))
-    }
-  }
 }

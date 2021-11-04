@@ -1,7 +1,6 @@
-import { SyntheticEvent, useState } from "react"
+import { SyntheticEvent, useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { GetServerSideProps } from "next"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 
@@ -9,16 +8,42 @@ import Layout from "../components/layout"
 import { AuthContext, useAuth } from "../components/auth"
 
 import { NOT_FOUND } from "../lib/http"
-import { NONE_FOUND, randomize, Suggestion } from "../lib/models/suggestion"
+import { Suggestion } from "../lib/models/suggestion"
 
 import styles from "../styles/random.module.css"
 import utilStyles from "../styles/utils.module.css"
 
-export default function Random({ suggestion, anyFound }: { suggestion: Suggestion, anyFound: boolean }) {
+export default function Random() {
   const { user } = useAuth() as AuthContext
-  const [choice, setChoice] = useState(suggestion as Suggestion)
+  const [choice, setChoice] = useState({} as Suggestion)
   const [loading, setLoading] = useState(false)
-  const [noneFound, setNoneFound] = useState(!anyFound)
+  const [noneFound, setNoneFound] = useState(false)
+
+  useEffect(() => {
+    if (!user) { return }
+
+    async function doRequest() {
+      const response = await fetch("/api/get-suggestion", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        method: "GET",
+      })
+
+      const result = (await response.json()) as Suggestion
+
+      if (response.status !== NOT_FOUND) {
+        setNoneFound(false)
+        setChoice(result)
+      } else {
+        setNoneFound(true)
+        setChoice({} as Suggestion)
+      }
+    }
+
+    doRequest()
+  }, [user])
 
   const randomize = async (event: SyntheticEvent) => {
     event.preventDefault()
@@ -105,24 +130,4 @@ export default function Random({ suggestion, anyFound }: { suggestion: Suggestio
       }
     </Layout >
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  let result = {} as Suggestion
-  let anyFound = true
-
-  try {
-    result = await randomize()
-  } catch (e) {
-    if (e === NONE_FOUND) {
-      anyFound = false
-    }
-  }
-
-  return {
-    props: {
-      suggestion: JSON.parse(JSON.stringify(result)),
-      anyFound,
-    }
-  }
 }
