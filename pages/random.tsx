@@ -1,22 +1,23 @@
 import { SyntheticEvent, useState } from "react"
 import Image from "next/image"
+import { GetServerSideProps } from "next"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 
 import Layout from "../components/layout"
 import { AuthContext, useAuth } from "../components/auth"
-import { NOT_FOUND } from "../lib/http"
 
-import { Suggestion } from "../lib/models/suggestion"
+import { NOT_FOUND } from "../lib/http"
+import { NONE_FOUND, randomize, Suggestion } from "../lib/models/suggestion"
 
 import styles from "../styles/random.module.css"
 import utilStyles from "../styles/utils.module.css"
 
-export default function Random() {
+export default function Random({ suggestion, anyFound }: { suggestion: Suggestion, anyFound: boolean }) {
   const { user } = useAuth() as AuthContext
-  const [choice, setChoice] = useState({} as Suggestion)
+  const [choice, setChoice] = useState(suggestion as Suggestion)
   const [loading, setLoading] = useState(false)
-  const [noneFound, setNoneFound] = useState(false)
+  const [noneFound, setNoneFound] = useState(!anyFound)
 
   const randomize = async (event: SyntheticEvent) => {
     event.preventDefault()
@@ -111,4 +112,24 @@ export default function Random() {
       ) : null}
     </Layout>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  let result = {} as Suggestion
+  let anyFound = true
+
+  try {
+    result = await randomize()
+  } catch (e) {
+    if (e === NONE_FOUND) {
+      anyFound = false
+    }
+  }
+
+  return {
+    props: {
+      suggestion: JSON.parse(JSON.stringify(result)),
+      anyFound,
+    }
+  }
 }
